@@ -1,0 +1,20 @@
+{
+  "name": "wacsoft_sms_server",
+  "version": "1.0.0",
+  "description": "for For sendding sms ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Allan Chris Wajega",
+  "license": "ISC",
+  "dependencies": {
+
+ 
+    "mysql": "*",
+    "hat":"*",
+    "underscore":"*",
+    "request" :"*"
+
+  }
+}
