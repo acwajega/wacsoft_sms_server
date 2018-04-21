@@ -22,12 +22,12 @@ if (results.length === 0){
 //-------------if the supplied credentials are false
 console.log('Access Denied ........Invalid username or password.....');
 //----------------------inserting the the url response table -----------------
-url_response_controller.urlResponse(req,res,'Access Denied ........Invalid username or password');
+url_response_controller.urlResponse(req,res,'Sorry, Access Denied, Invalid Username or Password');
 //----------------------End of inserting into the url respnse table----
 //-----Response---
-return   res.end(JSON.stringify({ err: 'Access Denied..........Invalid Username or Password' }));
+return   res.end(JSON.stringify({ resp:"err",err: 'Sorry, Access Denied, Invalid Username or Password' }));
 
-res.end(JSON.stringify());
+
 //------End of Response
 }
 
@@ -56,7 +56,7 @@ return res.end(JSON.stringify({ err: err }));
 else
 {
 if (results.length ===  0){
-return res.end(JSON.stringify({ err: 'Sorry, your Account has been Suspended or Deactivated!!' }));
+return res.end(JSON.stringify({ resp:"err",err: 'Sorry, your Account has been Suspended or Deactivated!!' }));
 //----------------------inserting the the url response table -----------------
 url_response_controller.urlResponse(req,res,'Sorry, your Account has been Suspended or Deactivated!!');
 //----------------------End of inserting into the url respnse table----

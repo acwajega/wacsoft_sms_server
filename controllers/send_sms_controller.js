@@ -74,7 +74,14 @@ request(options, function (error, response, body) {
 if (!error && response.statusCode == 200) {
     // Print out the response body
     console.log(body)
- res.end(body);   
+ 
+
+//--------SENDING BACK RESPONSE TO THE CLIENT------
+ res.end(JSON.stringify({ resp:"pass",msg: 'Message has been successfully sent!!' })); 
+
+
+
+
 var jsonObject=JSON.parse(body);
     if (jsonObject.success === true){
 
@@ -85,7 +92,11 @@ var jsonObject=JSON.parse(body);
 
     	//------
 
-    }
+    } 
+}
+else
+{
+	res.end(JSON.stringify({ resp:"err",err: 'Sorry, we are unable to send this message at this time, please try again later!!' })); 
 }
 });
 //-------------------------------------END OF SENDING OF THE SMS------

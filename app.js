@@ -10,6 +10,7 @@ var db_controller = require('./controllers/database_controller.js');
 var new_server_request_controller = require('./controllers/new_server_request_controller.js');  
 var security_controller = require('./controllers/security_controller.js');  
 var sms_controller = require('./controllers/send_sms_controller.js');  
+var accounts_controller = require('./controllers/accounts_controller.js'); 
 //-------------------------END OF CONTROLLERS-------------------------
 
 
@@ -41,12 +42,15 @@ var Servr =http.createServer(function(req,res){
  var querryData = url.parse(req.url, true).query;
 //---------------------------------------------------------
    
-
+//-------------------When the action is Create Account---------------
+ if (querryData.action === 'createAccount') {
+ 	accounts_controller.createAccount(req,res,querryData);//----------------TRYING TO LOG INTO THE SERVER
+ }
+//-------------------End of request Create Account-------
 
 //-------------------When the action is authentication------
  if (querryData.action === 'auth') {
  	security_controller.logingIntosmsServer(req,res,querryData);//----------------TRYING TO LOG INTO THE SERVER
-
  }
 //-------------------End of request authentication-------
 
@@ -55,7 +59,6 @@ var Servr =http.createServer(function(req,res){
 if (querryData.action === 'sendSms'){
 	sms_controller.sendSms(req,res,querryData,'256775212088','matilda123');
 }
-
 //---------------------End of When the action is sending sms--------
 
 
