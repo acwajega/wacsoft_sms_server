@@ -1,70 +1,79 @@
-//---For Creating the Server
-var http = require('http');
+//--------------SERVER CONFIGURATION-------------
+var express  = require('express');
+var app      = express();  
+var server = require('http').createServer(app); 
+var path = require('path');
+var morgan = require('morgan');             // log requests to the console (express4)
+var bodyParser = require('body-parser');    // pull information from HTML POST (express4)
+var methodOverride = require('method-override');
+//---------------END OF SERVER CONFIGURATION---------
+
+
+//------------------------APP CONFIGURATION---------------------------
+app.use(express.static(__dirname + '/routes')); 
+app.use(express.static(__dirname + '/controllers'));
+//--------------------------END OF APP CONFIGUARATION---------
+
+//--------------------APPLICATION MIDDLEWARE----------------------------
+app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
+app.use(bodyParser.json());                                     // parse application/json
+app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
+app.use(methodOverride());
+//--------------------------------------------------------------------------------------------------------
+
 
 //-------For getting an sending url requests
 var url = require('url');
 
 
-//---------------------------CONTROLLERS------------------------------
+//---------------------------CONTROLLERS-----------------------------------
 var db_controller = require('./controllers/database_controller.js');  
-var new_server_request_controller = require('./controllers/new_server_request_controller.js');  
-var security_controller = require('./controllers/security_controller.js');  
-var sms_controller = require('./controllers/send_sms_controller.js');  
-var accounts_controller = require('./controllers/accounts_controller.js'); 
 //-------------------------END OF CONTROLLERS-------------------------
 
 
 //-------------------SQL CONNECTION PRAMETER WE ARE GOING TO USER-----
 var sd_use = db_controller.sd_use;   
 //---------------------END OF PARAMETER--------------------------------
+//--------------------------------------------------------------------------------------------------------
+var route_index = require('./routes/route_index');	
+//--------------------------------------------------------------------------------------------------------
+
 //---------------------------------CONNECTING TO MYSQL DB--------------------------------------------------  
- db_controller.CONNECT_TO_DATABASE();
-  //--------------------------------------------------------------------------------------------------------
+db_controller.CONNECT_TO_DATABASE();
+//--------------------------------------------------------------------------------------------------------
+
+
+ //*****************************    ROUTING *******************************************************************
+
+    app.post('/api/user/login',route_index);//--------User login    
+    app.post('/api/user/sendSms',route_index);//--------User login    
+
+
+//***************************** END OF ROUTING ****************************************************************
 
 
 
 
-//=======================================================
-//=======================================================
-var Servr =http.createServer(function(req,res){
-
-//---------------------INSERTING THE SERVER REQUEST--------------------
- new_server_request_controller.recordServerRequest(req,res);//-----------------new_server_request_controller----
-//----------------------END OF INSERTING THE SERVER REQUEST-------------
 
 
+ // =====================listen (start app with node server.js) ====================================
+//app port
+var port = process.env.PORT || 7070;
 
-//------Specifying the type of request
-   res.writeHead(200, {'Content-Type': 'application/json'});
-//------End of Specifying the type of request------
-
-//------------------------------Parsing the recieved URL----------
- var querryData = url.parse(req.url, true).query;
-//---------------------------------------------------------
-   
-//-------------------When the action is Create Account---------------
- if (querryData.action === 'createAccount') {
- 	accounts_controller.createAccount(req,res,querryData);//----------------TRYING TO LOG INTO THE SERVER
- }
-//-------------------End of request Create Account-------
-
-//-------------------When the action is authentication------
- if (querryData.action === 'auth') {
- 	security_controller.logingIntosmsServer(req,res,querryData);//----------------TRYING TO LOG INTO THE SERVER
- }
-//-------------------End of request authentication-------
-
-
-//---------------------When the action is sending sms--------
-if (querryData.action === 'sendSms'){
-	sms_controller.sendSms(req,res,querryData,'256775212088','matilda123');
-}
-//---------------------End of When the action is sending sms--------
+server.listen(port, function(){
+ console.log('http://localhost'+port+'/');
+});
+// =================================================================================================
 
 
 
 
-}).listen(7070, "0.0.0.0");
 
-//-------------END OF CREATING THE SMS SERVER
-   console.log('Server running at http://0.0.0.0:8080');
+
+
+
+
+
+
+
+

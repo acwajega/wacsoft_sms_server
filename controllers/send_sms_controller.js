@@ -5,10 +5,13 @@ var qry_action = db_controller.sd_use;//-------------SQL CONNECTION GOING TO PER
 
 
 //--------------------------Sending sms -----------------------------
-module.exports.sendSms = function(req,res,smsBody,apiUsername,apiPassword){
+module.exports.sendSms = function(req,res){
 
+
+var smsBody  = req.body;
+console.log(smsBody);
 var _=require("underscore");
-   var jsonObject=JSON.parse(smsBody.data);
+   var jsonObject=JSON.parse(JSON.stringify(smsBody));
 _.each(jsonObject, function(data_obj) {
 
 var smsRecord =JSON.parse(JSON.stringify(data_obj));
@@ -63,8 +66,8 @@ var options = {
 url: 'http://smshour.com/smsserver/bulksms-api.php',
 method: 'POST',
 headers: headers,
-form: { 'username': apiUsername,
-'password':apiPassword,'type':'normal','recipients':smsRecord.number,'message':smsRecord.message,
+form: { 'username': '256775212088',
+'password':'matilda123','type':'normal','recipients':smsRecord.number,'message':smsRecord.message,
 'from':smsRecord.username} 
 }
 

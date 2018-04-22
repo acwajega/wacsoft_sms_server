@@ -5,11 +5,12 @@ var url = require('url');
 //----------------------------Loging into the eSente----------------------------
 
 //----------------------------LOGGING INTO THE SMS SERVER---------------
-module.exports.logingIntosmsServer = function (req,res,querryData) {
-console.log('tried to login');
+module.exports.logingIntosmsServer = function (req,res) {
+    var login_credentials = req.body;
+//console.log('tried to login');
 
 qry_action.query('select * from client_list where cl_username = ? and cl_password = ?',
-	[querryData.username,querryData.password],function(err,results){
+	[login_credentials.username,login_credentials.password],function(err,results){
 
 if (err){
 return    res.end(JSON.stringify({ err: err }));  //------RETURN THE ERROR RESULT
@@ -115,7 +116,7 @@ req.connection.socket.remoteAddress;
 //-----------------------------RECORDING A USER LOG INTO THE SYSTEM -------------------------------------------------------
 qry_action.query('insert into client_logins set ?', {  CL_CI_ID: obj.CI_ID,CL_USERNAME: obj.CI_USERNAME,
 CL_ACCESS_TOKEN: token_id,
-CL_DATE: Adate,CL_TIME: Atime,CL_IP: ip,CL_API_ACCESS_KEY: querryData.access_api_key}, function(err, result) {
+CL_DATE: Adate,CL_TIME: Atime,CL_IP: ip,CL_API_ACCESS_KEY: login_credentials.access_api_key}, function(err, result) {
 if (err) throw err;
 
 console.log(result.insertId);

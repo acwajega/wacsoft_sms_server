@@ -14,7 +14,11 @@
     "mysql": "*",
     "hat":"*",
     "underscore":"*",
-    "request" :"*"
+    "request" :"*",
+    "express": "^4.13.4",
+    "body-parser": "~1.0.0",
+     "morgan": "~1.0.0",
+     "method-override": "^2.1.3"
 
   }
 }
